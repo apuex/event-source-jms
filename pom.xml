@@ -5,7 +5,7 @@
 
   <groupId>com.github.apuex.event-source</groupId>
   <artifactId>event-source-jms</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <packaging>jar</packaging>
 
   <parent>
@@ -18,12 +18,12 @@
     <dependency>
       <groupId>com.github.apuex.event-source</groupId>
       <artifactId>event-source-api</artifactId>
-      <version>1.0.0</version>
+      <version>1.0.1</version>
     </dependency>
     <dependency>
       <groupId>com.github.apuex.protobuf</groupId>
       <artifactId>jms-pb-converter</artifactId>
-      <version>1.0.1</version>
+      <version>1.0.2</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
