@@ -1,6 +1,7 @@
 package com.github.apuex.eventsource.jms;
 
 import com.github.apuex.eventsource.EventSourceAdapter;
+
 import static com.github.apuex.protobuf.jms.JmsConverterConfig.DEFAULT_PRINCIPAL_NAME_FIELD;
 import static com.github.apuex.protobuf.jms.JmsConverterConfig.DEFAULT_SERVICE_URI_FIELD;
 
@@ -24,18 +25,26 @@ public class EventSourceJmsAdapter implements EventSourceAdapter {
   @Override
   public void publish(Object event, Principal principal) {
     final Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-    jmsTemplate.convertAndSend(event, message -> { if(null != principal)
+    jmsTemplate.convertAndSend(event, message -> {
       message.setJMSTimestamp(calendar.getTimeInMillis());
-      message.setStringProperty(principalNameField, principal.getName());
+      if (null != principal) {
+        message.setStringProperty(principalNameField, principal.getName());
+      }
       return message;
     });
   }
 
   @Override
   public void publish(Object event, Principal principal, URI service) {
-    jmsTemplate.convertAndSend(event, message -> { if(null != principal)
-      message.setStringProperty(principalNameField, principal.getName());
-      message.setStringProperty(serviceUriField, service.toString());
+    final Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+    jmsTemplate.convertAndSend(event, message -> {
+      message.setJMSTimestamp(calendar.getTimeInMillis());
+      if (null != principal) {
+        message.setStringProperty(principalNameField, principal.getName());
+      }
+      if (null != service) {
+        message.setStringProperty(serviceUriField, service.toString());
+      }
       return message;
     });
   }
