@@ -8,6 +8,8 @@ import org.springframework.jms.core.JmsTemplate;
 
 import java.net.URI;
 import java.security.Principal;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 public class EventSourceJmsAdapter implements EventSourceAdapter {
   private String principalNameField = DEFAULT_PRINCIPAL_NAME_FIELD;
@@ -21,7 +23,9 @@ public class EventSourceJmsAdapter implements EventSourceAdapter {
 
   @Override
   public void publish(Object event, Principal principal) {
+    final Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
     jmsTemplate.convertAndSend(event, message -> { if(null != principal)
+      message.setJMSTimestamp(calendar.getTimeInMillis());
       message.setStringProperty(principalNameField, principal.getName());
       return message;
     });
